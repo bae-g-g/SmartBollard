@@ -11,11 +11,10 @@ picam2.set_controls({"FrameDurationLimits": (33333, 33333)})
 picam2.start()
 
 
+GTQ_SERVER = Flask(__name__)
 
 
-app = Flask(__name__)
-
-@app.route('/')
+@GTQ_SERVER.route('/')
 def index():
     return "TEAM-GTQ Server"
 
@@ -32,7 +31,7 @@ def generate():
                    b'Content-Type: image/jpeg\r\n\r\n' + jpeg.tobytes() + b'\r\n\r\n')
 
 
-@app.route('/video_feed')
+@GTQ_SERVER.route('/video_feed')
 def video_feed():
     return Response(generate(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
@@ -42,12 +41,12 @@ def video_feed():
 
 current_state = "off"
 
-@app.route('/signal', methods=['GET'])
+@GTQ_SERVER.route('/signal', methods=['GET'])
 def signal():
     global current_state
     return current_state
 
-@app.route('/signal/<state>', methods=['GET'])
+@GTQ_SERVER.route('/signal/<state>', methods=['GET'])
 def set_signal(state):
     global current_state
     if state in ["on", "off"]:
