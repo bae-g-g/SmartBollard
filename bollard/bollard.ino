@@ -86,7 +86,7 @@ void loop() {
     strip.show();
     
 
-    prev_payload = payload;
+    prev_payload = payload; // 이전상태저장장
     http.end();  // HTTP 연결 종료 
     delay(10);
 
