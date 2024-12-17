@@ -17,7 +17,7 @@ if not cap.isOpened():
 cv2.setUseOptimized(True)
 cv2.setNumThreads(4)
 
-frame_skip = 5  # 프레임 건너뛰기
+frame_skip = 10  # 프레임 건너뛰기
 frame_count = 0
 
 prev_detected = False
@@ -33,9 +33,14 @@ while True:
 
         detected = False
         
-        for cls in results.boxes.cls:
-            if cls in [1,2,3,5,7]:
-                detected = True
+        for result in results:
+            for cls in result.boxes.cls:
+                class_name = model.names[int(cls)]
+                if class_name.lower() in ["car", "truck", "bus"]:
+                    print("---------------차량 인식----------------")
+                    detected = True
+                    break
+            if detected:
                 break
         
 
